@@ -18,4 +18,7 @@ class BigBlind(Blind):
 
     # Metodos
     def setter_points(self):
-        return 450 * self.floor * self.round
+        if self.floor <= 4:
+            return 450 * self.floor
+        else:
+            return 450 * self.floor * self.round

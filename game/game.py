@@ -4,6 +4,7 @@
 # Importaciones
 from blinds.small_blind import SmallBlind
 from blinds.big_blind import BigBlind
+from blinds.boss_blind import BossBlind
 
 # Clase Game
 class Game(object):
@@ -110,8 +111,7 @@ class Game(object):
 
     @actual_blind.setter
     def actual_blind(self, blind):
-        if isinstance(blind, (SmallBlind, BigBlind)):
-                              #, BigBlind, BossBlind)):
+        if isinstance(blind, (SmallBlind, BigBlind, BossBlind)):
             self.__actual_blind = blind
 
     # actual_score
@@ -149,11 +149,14 @@ class Game(object):
     # Metodos
     # elegir la ciega a enfrentar
     def select_blind(self):
-        if self.actual_blind is None:
+        if self.actual_blind is None or isinstance(self.actual_blind, BossBlind):
             self.actual_blind = SmallBlind(self.floor, self.round)
 
         elif isinstance(self.actual_blind, SmallBlind):
             self.actual_blind = BigBlind(self.floor, self.round)
+
+        elif isinstance(self.actual_blind, BigBlind):
+            self.actual_blind = BossBlind(self.floor, self.round)
 
         else:
             print("NO FUNCIONA")
@@ -186,7 +189,6 @@ class Game(object):
     def pass_round_floor(self):
         # Pasar de ronda/piso
         if self.actual_score >= self.actual_blind.points:
-            self.select_blind() # elegir una nueva ciega
             self.round += 1 # sumar +1 a la ronda
             self.actual_score = 0 # settear los puntos a 0
             self.player.money += self.actual_blind.reward + self.player_hands # sumar el dinero al jgdr
@@ -195,8 +197,10 @@ class Game(object):
             self.player.copy_deck = self.player.deck # copiar el mazo original
             self.player.hand = self.player.generate_hand() # restablecer la mano
 
-            #if isinstance(self.actual_blind, BossBlind):
-            #    self.floor += 1
+            if isinstance(self.actual_blind, BossBlind):
+                self.floor += 1
+
+            self.select_blind() # elegir una nueva ciega
 
             return True
 
@@ -220,6 +224,10 @@ class Game(object):
             self.player.add_hand_cards() # agregar cartas faltantes a la mano
             self.player.remove_selected_cards() # remover las cartas seleccionadas
             return True
+
+    # atajos para test
+    def agregar_puntos(self):
+        self.actual_score = 999999
 
 # Test
 if __name__ == "__main__":

@@ -172,6 +172,9 @@ class GameUi(object):
         # mostrar la mano de cartas
         self.hand_view()
 
+        # Atajos
+        self.root.bind("<Control-p>", self.agregar_puntos)
+
     # Metodos
     # mostrar las cartas de la mano
     def hand_view(self):
@@ -273,6 +276,11 @@ class GameUi(object):
     # ejecutar la ventana principal
     def execute(self):
         self.root.mainloop()
+
+    # atajos para test
+    def agregar_puntos(self, event):
+        self.game.agregar_puntos()
+        self.actual_score.config(text=f"Puntos: {self.game.actual_score}")
 
 # Test
 if __name__ == "__main__":
