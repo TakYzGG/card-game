@@ -1,0 +1,14 @@
+- CardGame
+	- Player
+		+ Cards
+		+ Jokers
+		+ Money
+	- Cards
+		- Poker
+		- Jokers
+	- Shop
+	- Blisds
+	- Game
+		+ round
+		+ floor
+		+ blinds

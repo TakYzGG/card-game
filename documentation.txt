@@ -1,0 +1,58 @@
+ /-- Documentacion de CardGame (copia de balatro en python) --\
+
+Este es mi primer proyecto grande
+
+-- Estructura del proyecto --
+
+/-- cards --\
+esta carpeta tiene las subcarpetas "jokers" y "poker" que contienen el
+codigo de los jokers y de las cartas de poker respectivamente
+
+/-- cards/jokers --\
+esta carpeta tiene el archivo "joker.py" que contiene el codigo necesario para
+crear un joker
+
+-- joker.py --
+clase Joker
+
+parametros:
++ name: contiene el nombre del joker
++ description: contiene la descripcion del joker
++ add_multipler: agrega multiplicador a la puntuacion
++ multi_multipler: multiplica el multiplicador de la puntuacion
++ point: agrega puntos a la puntuacion
++ suit: aplica los efectos a un palo especifico
++ category: aplica los efectos a una categoria especifica
+
+metodos:
+
+/-- cards/poker --\
+esta carpeta tiene los archivos "poker.py" y "poker_hands.py" que contienen el
+codigo necesario para las partas de poker y las manos de poker respectivamente
+
+-- poker.py --
+Clase PokerCard
+
+parametros:
++ suit: contiene el palo de la carta (Picas, Corazones, Treboles y Diamantes)
++ category: contiene la categoria de la carta (As, King, Queen, Joker, 10, etc)
+
+metodos:
++ obtener_cartas(): retorna una tupla con (palos, categorias)
+
+-- poker_hands.py --
+Clase PokerHands
+
+parametros:
+
+metodos:
++ play_poker_hand(player): retorna la mano de poker que se va a jugar
++ highcard(*args): retorna "Highcard" que es el nombre de la mano a jugar,
+  una tupla con la carta que mas puntua y los puntos y multiplicador de la mano
+  jugada
++ parejas(*args): retorna el nombre de la mano de poker jugada, una tupla con
+  las cartas que puntuan en esa mano y los puntos y multiplicador de la mano
+  jugada
++ two_pair(*args): retorna "Two pair", una tupla con las 2 parejas jugadas y
+  los puntos y multiplicador de la mano jugada
++ color: 
