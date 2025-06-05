@@ -5,8 +5,8 @@ from blinds.blind import Blind
 
 # Clase SmallBlind
 class SmallBlind(Blind):
-    # Atributos de la clase
     def __init__(self, floor, ronda):
+        # Atributos de la clase
         self.floor = floor
         self.round = ronda
         super().__init__(name="Small blind",
