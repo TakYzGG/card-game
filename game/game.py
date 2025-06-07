@@ -149,7 +149,7 @@ class Game(object):
     # Metodos
     # elegir la ciega a enfrentar
     def select_blind(self):
-        if self.actual_blind is None or isinstance(self.actual_blind, BossBlind):
+        if isinstance(self.actual_blind, (type(None), BossBlind)):
             self.actual_blind = SmallBlind(self.floor, self.round)
 
         elif isinstance(self.actual_blind, SmallBlind):
