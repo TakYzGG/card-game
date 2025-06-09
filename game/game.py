@@ -206,7 +206,7 @@ class Game(object):
 
     # jugar las cartas seleccionadas
     def play_hand(self):
-        if self.player_hands > 0:
+        if self.player_hands > 0 and len(self.player.selected_cards) > 0:
             mano_jugada, cartas, puntos = self.poker_hands.play_poker_hand(self.player)
 
             self.player_hands -= 1 # restar -1 mano al jugador

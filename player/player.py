@@ -180,25 +180,28 @@ class Player(object):
             if len(self.selected_cards) < 5:
                 self.selected_cards.append(card)
                 return True
-            else:
-                return False
 
     # deseleccionar cardas
-    def deselect_card(self, card, full=False):
-        if full:
-            self.selected_cards.clear()
+    def deselect_card(self, card):
         if card in self.selected_cards:
             self.selected_cards.remove(card)
             return True
-        else:
-            return False
+
+    # manipular cartas
+    def manipulate_card(self, card, clear=False):
+        if clear:
+            self.selected_cards.clear()
+        elif self.select_card(card): pass
+        elif self.deselect_card(card): pass
 
     # ordenar la mano de cartas por la categoria
     def order_category(self):
+        self.hand_view()
         self.hand = sorted(self.hand, key=lambda x: x.points, reverse=True)
 
     # ordenar la mano de cartas por el palo
     def order_suit(self):
+        self.hand_view()
         self.order_category()
 
         cartas = defaultdict(list)
