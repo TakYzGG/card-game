@@ -163,10 +163,6 @@ class Game(object):
 
         return self.actual_blind
 
-    # retornar el nombre y los puntos maximos de la ciega
-    def obtener_ciega(self):
-        return self.actual_blind.name, self.actual_blind.points, self.actual_blind.reward
-
     # obtener la mano de cartas seleccionadas
     def obtain_hand(self):
         return self.poker_hands.play_poker_hand(self.player)
@@ -215,6 +211,7 @@ class Game(object):
 
             self.player.add_hand_cards() # agregar cartas faltantes a la mano
             self.player.remove_selected_cards() # remover las cartas seleccionadas
+            self.pass_round_floor()
             return mano_jugada
 
     # descartar las cartas seleccionadas
