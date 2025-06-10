@@ -12,11 +12,14 @@ class PokerHands(object):
     # Metodos
     # jugar la mano actual
     def play_poker_hand(self, player):
-        manos = (self.color, self.two_pair, self.parejas, self.highcard)
-        for mano in manos:
-            resultado = mano(*player.selected_cards)
-            if resultado:
-                return resultado
+        if player.selected_cards:
+            manos = (self.color, self.two_pair, self.parejas, self.highcard)
+            for mano in manos:
+                resultado = mano(*player.selected_cards)
+                if resultado:
+                    return resultado
+        else:
+            return " ", " ", ("0", "0")
 
     # mano: highcard
     def highcard(self, *args):

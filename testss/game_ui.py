@@ -7,6 +7,9 @@ from pygame.locals import *
 # Clase Interfaze
 class Interfaze(object):
     def __init__(self, game, player):
+        # Inicializar pygame
+        pygame.init()
+
         # Atributos de clase
         self.w = 600
         self.h = 400
@@ -14,88 +17,96 @@ class Interfaze(object):
         self.game = game
         self.player = player
 
-        # Inicializar pygame
-        pygame.init()
-
         # 
         self.lista_botones_cartas = []
         
         # Configuracion de la ventana
         pygame.display.set_caption("Balatro en python")
+        self.background = pygame.image.load("assets/bg.jpg").convert()
         
         # Control de FPS
         self.fps = 60
         self.reloj = pygame.time.Clock()
 
         # Colores
-        self.azul = (0, 0, 255)
+        self.negro = (40, 40, 40)
+        self.rojo = (204, 36, 29)
+        self.verde = (152, 151, 26)
+        self.azul = (69, 133, 136)
+        self.amarillo = (215, 153, 33)
 
         # Fuente
-        self.font = pygame.font.SysFont("Ubuntu Mono", 16)
+        self.font = pygame.font.SysFont("Ubuntu Mono", 16, "bold")
 
         # Informacion de la partida
 
         # Botones de juego
-        self.play_button = pygame.Rect(150, 350, 85, 40)
-        self.discart_button = pygame.Rect(420, 350, 85, 40)
-        self.order_category_button = pygame.Rect(330, 350, 85, 40)
-        self.order_suit_button = pygame.Rect(240, 350, 85, 40)
+        self.play_button = pygame.Rect(215, 350, 85, 40)
+        self.discart_button = pygame.Rect(485, 350, 85, 40)
+        self.order_category_button = pygame.Rect(395, 350, 85, 40)
+        self.order_suit_button = pygame.Rect(305, 350, 85, 40)
     
     # Metodos
     # Actualizar la informacion de la pantalla
     def update_info(self):
 
         self.blind_name = self.font.render(f"{self.game.actual_blind.name}",
-                                           True, self.azul)
+                                           True, self.negro)
 
         self.blind_points = self.font.render(f"{self.game.actual_blind.points}",
-                                             True, self.azul)
+                                             True, self.negro)
 
-        self.blind_reward = self.font.render(f"{self.game.actual_blind.reward}",
-                                             True, self.azul)
+        self.blind_reward = self.font.render(f"${self.game.actual_blind.reward}",
+                                             True, self.amarillo)
 
         self.actual_score = self.font.render(f"{self.game.actual_score}",
-                                             True, self.azul)
+                                             True, self.negro)
 
         # FIXMI: mostrar solo el nombre de la mano seleccionada
-        self.hand_poker = self.font.render(f"{self.game.obtain_hand()}", True, self.azul)
+        self.hand_poker = self.font.render(f"{self.game.obtain_hand()[0]}", True, self.negro)
 
-        self.poker_hand_points = self.font.render("0", True, self.azul)
+        self.poker_hand_points = self.font.render(f"{self.game.obtain_hand()[2][0]}",
+                                                  True, self.azul)
 
-        self.poker_hand_multi = self.font.render("0",True, self.azul)
+        self.poker_hand_multi = self.font.render(f"{self.game.obtain_hand()[2][1]}",
+                                                 True, self.rojo)
 
         self.hands_play = self.font.render(f"Manos: {self.game.player_hands}",
-                                           True, self.azul)
+                                           True, self.negro)
 
         self.discarts = self.font.render(f"Descartes: {self.game.player_discarts}",
-                                         True, self.azul)
+                                         True, self.negro)
 
-        self.money = self.font.render(f"{self.player.money}", True, self.azul)
+        self.money = self.font.render(f"${self.player.money}", True, self.amarillo)
 
-        self.floor = self.font.render(f"Piso: {self.game.floor}", True, self.azul)
+        self.floor = self.font.render(f"Piso: {self.game.floor}", True, self.negro)
 
-        self.round = self.font.render(f"Ronda: {self.game.round}", True, self.azul)
+        self.round = self.font.render(f"Ronda: {self.game.round}", True, self.negro)
+
+    # Dubujar un marco para la informacion de la partida
+    def draw_frame(self):
+        pygame.draw.rect(self.screen, (255, 255, 255), (10, 10, 180, 380))
 
     # Dibujar la informacion de la partida
     def draw_info(self):
-        self.screen.blit(self.blind_name, (0, 0))
-        self.screen.blit(self.blind_points, (0, 20))
-        self.screen.blit(self.blind_reward, (0, 40))
-        self.screen.blit(self.actual_score, (0, 60))
-        self.screen.blit(self.hand_poker, (0, 80))
-        self.screen.blit(self.poker_hand_points, (0, 100))
-        self.screen.blit(self.poker_hand_multi, (20, 100))
-        self.screen.blit(self.hands_play, (0, 120))
-        self.screen.blit(self.discarts, (0, 140))
-        self.screen.blit(self.money, (0, 160))
-        self.screen.blit(self.floor, (0, 180))
-        self.screen.blit(self.round, (0, 200))
+        self.screen.blit(self.blind_name, (20, 20))
+        self.screen.blit(self.blind_points, (20, 40))
+        self.screen.blit(self.blind_reward, (20, 60))
+        self.screen.blit(self.actual_score, (20, 80))
+        self.screen.blit(self.hand_poker, (20, 100))
+        self.screen.blit(self.poker_hand_points, (20, 120))
+        self.screen.blit(self.poker_hand_multi, (40, 120))
+        self.screen.blit(self.hands_play, (20, 140))
+        self.screen.blit(self.discarts, (20, 160))
+        self.screen.blit(self.money, (20, 180))
+        self.screen.blit(self.floor, (20, 200))
+        self.screen.blit(self.round, (20, 220))
 
     # Dibujar las cartas
     def draw_cards(self):
         self.lista_botones_cartas = [] # Limpiar los rectangulos
-        x = self.w // 4
-        y = self.h / 1.5
+        x = 215 
+        y = 285
         color = (0, 255, 0)
         for carta in self.player.hand:
             rect = pygame.Rect(x, y, 40, 60)
@@ -105,9 +116,9 @@ class Interfaze(object):
             else: # Pintar cartas no seleccionadas
                 pygame.draw.rect(self.screen, color, rect)
 
-            suit = self.font.render(f"{carta.suit}", True, (0, 0, 0))
+            suit = self.font.render(f"{carta.suit}", True, self.negro)
 
-            category = self.font.render(f"{carta.category}", True, (0, 0, 0))
+            category = self.font.render(f"{carta.category}", True, self.negro)
 
             self.screen.blit(suit, (x, y))
             self.screen.blit(category, (x, y+12))
@@ -117,10 +128,10 @@ class Interfaze(object):
 
     # Dibujar boton de jugar mano
     def draw_buttons(self):
-        pygame.draw.rect(self.screen, (150, 150, 150), self.play_button)
-        pygame.draw.rect(self.screen, (255, 0, 255), self.discart_button)
-        pygame.draw.rect(self.screen, (0, 155, 155), self.order_category_button)
-        pygame.draw.rect(self.screen, (155, 0, 155), self.order_suit_button)
+        pygame.draw.rect(self.screen, self.azul, self.play_button)
+        pygame.draw.rect(self.screen, self.rojo, self.discart_button)
+        pygame.draw.rect(self.screen, self.amarillo, self.order_category_button)
+        pygame.draw.rect(self.screen, self.amarillo, self.order_suit_button)
 
     # Presionar rectangulos
     def press_cards(self, pos):
@@ -143,7 +154,6 @@ class Interfaze(object):
         if self.order_category_button.collidepoint(pos):
             self.player.manipulate_card(None, True)
             self.player.order_category()
-            self.player.hand_view()
 
     # Boton para ordenar la mano de cartas por el palo
     def order_suit(self, pos):
@@ -174,8 +184,9 @@ class Interfaze(object):
                     self.order_suit(pos)
 
             # Dibujar en la pantalla
-            self.screen.fill((0,0,0))  # o el color de fondo que uses
+            self.screen.blit(self.background, (0, 0))
             self.update_info()
+            self.draw_frame()
             self.draw_info()
             self.draw_cards()
             self.draw_buttons()
