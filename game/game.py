@@ -5,6 +5,7 @@
 from blinds.small_blind import SmallBlind
 from blinds.big_blind import BigBlind
 from blinds.boss_blind import BossBlind
+from cards.jokers.why_so_serious import WhySoSerious
 
 # Clase Game
 class Game(object):
@@ -26,6 +27,8 @@ class Game(object):
         self.__actual_score = 0 # se tiene que reiniciar despues de cada ronda
         self.__points = 0
         self.__multi = 0
+
+        self.player.add_joker(WhySoSerious())
 
     # Getters y setters 
     # poker_hands
@@ -175,6 +178,10 @@ class Game(object):
         if retorno:
             return self.points, self.multi
 
+        if len(self.player.jokers) > 0:
+            for joker in self.player.jokers:
+                self.points += joker.points
+                self.multi += joker.add_multipler
         # sumar los puntos de todas las cartas jugadas
         for carta in cartas:
             self.points += carta.points

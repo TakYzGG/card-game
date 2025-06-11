@@ -211,11 +211,13 @@ class Player(object):
         self.hand = [y for x in cartas.values() for y in x]
 
     # agregar un joker nuevo
+    # FIXMI: no puede funcionar porque no tiene todas las clases de jokers
     def add_joker(self, joker):
-        if isinstance(joker, Joker):
-            self.__jokers.append(joker)
-        else:
-            return f"'joker' tiene que ser un Joker pero es: {type(joker)}"
+        self.__jokers.append(joker)
+        #if isinstance(joker, joker):
+        #    pass
+        #else:
+        #    return f"'joker' tiene que ser un Joker pero es: {type(joker)}"
 
     # eliminar un joker
     def remove_joker(self, joker):

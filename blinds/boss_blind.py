@@ -35,7 +35,10 @@ class BossBlind(Blind):
         return boss
 
     def setter_points(self):
-        return self.obtener_bosses()[self.boss][1] * self.floor * self.round
+        if self.floor <= 4:
+            return self.obtener_bosses()[self.boss][1] * self.floor
+        else:
+            return self.obtener_bosses()[self.boss][1] * self.floor * self.round
 
 # Test
 if __name__ == "__main__":

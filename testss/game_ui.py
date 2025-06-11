@@ -17,9 +17,10 @@ class Interfaze(object):
         self.game = game
         self.player = player
 
-        # 
+        # Listas para almacenar (rect, obj)
         self.lista_botones_cartas = []
-        
+        self.lista_botones_jokers = []
+
         # Configuracion de la ventana
         pygame.display.set_caption("Balatro en python")
         self.background = pygame.image.load("assets/bg.jpg").convert()
@@ -63,7 +64,8 @@ class Interfaze(object):
                                              True, self.negro)
 
         # FIXMI: mostrar solo el nombre de la mano seleccionada
-        self.hand_poker = self.font.render(f"{self.game.obtain_hand()[0]}", True, self.negro)
+        self.hand_poker = self.font.render(f"{self.game.obtain_hand()[0]}",
+                                           True, self.negro)
 
         self.poker_hand_points = self.font.render(f"{self.game.obtain_hand()[2][0]}",
                                                   True, self.azul)
@@ -126,6 +128,37 @@ class Interfaze(object):
             self.lista_botones_cartas.append((rect, carta))
             x += 45
 
+    # Dibujal la descripcion de las cartas
+    def draw_card_description(self, pos):
+        for rect, card in self.lista_botones_cartas:
+            if rect.collidepoint(pos):
+                pygame.draw.rect(self.screen, self.rojo, (305, 220, 175, 60))
+
+    # Dibujar los jokers
+    def draw_jokers(self):
+        self.lista_botones_jokers = [] # Limpiar lista
+        x = 215 
+        y = 10
+        color = (0, 255, 0)
+        for joker in self.player.jokers:
+            rect = pygame.Rect(x, y, 40, 60)
+            icon = pygame.image.load(joker.ruta_icon)
+
+            pygame.draw.rect(self.screen, self.amarillo, rect)
+            self.screen.blit(icon, rect.topleft)
+
+            self.lista_botones_jokers.append((rect, joker))
+            x += 45
+
+    # Dibujal la descripcion de las cartas
+    def draw_joker_description(self, pos):
+        for rect, joker in self.lista_botones_jokers:
+            if rect.collidepoint(pos):
+                pygame.draw.rect(self.screen, self.rojo, (305, 80, 175, 60))
+                description = self.font.render(f"Descripcion: {joker.description}",
+                                               True, self.negro)
+                self.screen.blit(description, (305, 80))
+
     # Dibujar boton de jugar mano
     def draw_buttons(self):
         pygame.draw.rect(self.screen, self.azul, self.play_button)
@@ -183,11 +216,19 @@ class Interfaze(object):
                     self.order_category(pos)
                     self.order_suit(pos)
 
+            # Actualizar la info de la partida
+            self.update_info()
+            
+            # Obtener coords del cursor
+            pos = pygame.mouse.get_pos()
+
             # Dibujar en la pantalla
             self.screen.blit(self.background, (0, 0))
-            self.update_info()
             self.draw_frame()
             self.draw_info()
             self.draw_cards()
+            self.draw_jokers()
             self.draw_buttons()
+            self.draw_card_description(pos)
+            self.draw_joker_description(pos)
             self.update_screen()

@@ -18,7 +18,10 @@ class SmallBlind(Blind):
 
     # Metodos
     def setter_points(self):
-        return 300 * self.floor * self.round
+        if self.floor <= 4:
+            return 300 * self.floor
+        else:
+            return 300 * self.floor * self.round
 
 # Test
 if __name__ == "__main__":
