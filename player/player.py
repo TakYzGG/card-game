@@ -1,7 +1,7 @@
 # Clase para crear un objecto Player
 
 # Importaciones
-from cards.poker.poker import PokerCard
+from cards.poker import PokerCard
 from random import choice
 from collections import defaultdict
 from copy import deepcopy

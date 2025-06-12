@@ -2,10 +2,8 @@
 # Tiene la ronda y el piso actual, la ciega, etc
 
 # Importaciones
-from blinds.small_blind import SmallBlind
-from blinds.big_blind import BigBlind
-from blinds.boss_blind import BossBlind
-from cards.jokers.why_so_serious import WhySoSerious
+from cards.jokers import *
+from blinds import *
 
 # Clase Game
 class Game(object):

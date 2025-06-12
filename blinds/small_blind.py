@@ -1,7 +1,7 @@
 # Clase para crear un objeto SmallBlind
 
 # Importaciones
-from blinds.blind import Blind
+from blinds import Blind
 
 # Clase SmallBlind
 class SmallBlind(Blind):

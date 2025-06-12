@@ -11,9 +11,10 @@ class Interfaze(object):
         pygame.init()
 
         # Atributos de clase
-        self.w = 600
-        self.h = 400
-        self.screen = pygame.display.set_mode((self.w, self.h))
+        self.info = pygame.display.Info()
+        self.w = self.info.current_w
+        self.h = self.info.current_h
+        self.screen = pygame.display.set_mode((self.w, self.h), pygame.RESIZABLE)
         self.game = game
         self.player = player
 
@@ -23,7 +24,8 @@ class Interfaze(object):
 
         # Configuracion de la ventana
         pygame.display.set_caption("Balatro en python")
-        self.background = pygame.image.load("assets/bg.jpg").convert()
+        self.background = pygame.image.load("assets/bg.png")
+        self.background_scale = pygame.transform.scale(self.background, (self.w, self.h))
         
         # Control de FPS
         self.fps = 60
@@ -31,6 +33,7 @@ class Interfaze(object):
 
         # Colores
         self.negro = (40, 40, 40)
+        self.blanco = (235, 219, 178)
         self.rojo = (204, 36, 29)
         self.verde = (152, 151, 26)
         self.azul = (69, 133, 136)
@@ -42,30 +45,26 @@ class Interfaze(object):
         # Informacion de la partida
 
         # Botones de juego
-        self.play_button = pygame.Rect(215, 350, 85, 40)
-        self.discart_button = pygame.Rect(485, 350, 85, 40)
-        self.order_category_button = pygame.Rect(395, 350, 85, 40)
-        self.order_suit_button = pygame.Rect(305, 350, 85, 40)
     
     # Metodos
     # Actualizar la informacion de la pantalla
     def update_info(self):
 
         self.blind_name = self.font.render(f"{self.game.actual_blind.name}",
-                                           True, self.negro)
+                                           True, self.blanco)
 
         self.blind_points = self.font.render(f"{self.game.actual_blind.points}",
-                                             True, self.negro)
+                                             True, self.blanco)
 
         self.blind_reward = self.font.render(f"${self.game.actual_blind.reward}",
                                              True, self.amarillo)
 
         self.actual_score = self.font.render(f"{self.game.actual_score}",
-                                             True, self.negro)
+                                             True, self.blanco)
 
         # FIXMI: mostrar solo el nombre de la mano seleccionada
         self.hand_poker = self.font.render(f"{self.game.obtain_hand()[0]}",
-                                           True, self.negro)
+                                           True, self.blanco)
 
         self.poker_hand_points = self.font.render(f"{self.game.obtain_hand()[2][0]}",
                                                   True, self.azul)
@@ -74,20 +73,23 @@ class Interfaze(object):
                                                  True, self.rojo)
 
         self.hands_play = self.font.render(f"Manos: {self.game.player_hands}",
-                                           True, self.negro)
+                                           True, self.blanco)
 
         self.discarts = self.font.render(f"Descartes: {self.game.player_discarts}",
-                                         True, self.negro)
+                                         True, self.blanco)
 
         self.money = self.font.render(f"${self.player.money}", True, self.amarillo)
 
-        self.floor = self.font.render(f"Piso: {self.game.floor}", True, self.negro)
+        self.floor = self.font.render(f"Piso: {self.game.floor}", True, self.blanco)
 
-        self.round = self.font.render(f"Ronda: {self.game.round}", True, self.negro)
+        self.round = self.font.render(f"Ronda: {self.game.round}", True, self.blanco)
 
     # Dubujar un marco para la informacion de la partida
     def draw_frame(self):
-        pygame.draw.rect(self.screen, (255, 255, 255), (10, 10, 180, 380))
+        pygame.draw.rect(self.screen, self.negro, ((self.w * 1.1) // 100, 
+                                                   (self.h * 2) // 100,
+                                                   (self.w * 30) // 100,
+                                                   self.h - 2 * ((self.h * 2) // 100)))
 
     # Dibujar la informacion de la partida
     def draw_info(self):
@@ -107,8 +109,8 @@ class Interfaze(object):
     # Dibujar las cartas
     def draw_cards(self):
         self.lista_botones_cartas = [] # Limpiar los rectangulos
-        x = 215 
-        y = 285
+        x = self.w // 2.8 
+        y = self.h // 1.4
         color = (0, 255, 0)
         for carta in self.player.hand:
             rect = pygame.Rect(x, y, 40, 60)
@@ -161,6 +163,14 @@ class Interfaze(object):
 
     # Dibujar boton de jugar mano
     def draw_buttons(self):
+        w = self.w // 2.8
+        h = self.h // 1.14
+
+        self.play_button = pygame.Rect(w, h, 85, 40)
+        self.discart_button = pygame.Rect(w + 270, h, 85, 40)
+        self.order_category_button = pygame.Rect(w + 90, h, 85, 40)
+        self.order_suit_button = pygame.Rect(w + 180, h, 85, 40)
+
         pygame.draw.rect(self.screen, self.azul, self.play_button)
         pygame.draw.rect(self.screen, self.rojo, self.discart_button)
         pygame.draw.rect(self.screen, self.amarillo, self.order_category_button)
@@ -216,6 +226,12 @@ class Interfaze(object):
                     self.order_category(pos)
                     self.order_suit(pos)
 
+                # Rescalar fondo
+                elif event.type == pygame.VIDEORESIZE:
+                    self.w, self.h = event.size
+                    self.background_scale = pygame.transform.scale(self.background,
+                                                                   (self.w, self.h))
+
             # Actualizar la info de la partida
             self.update_info()
             
@@ -223,7 +239,7 @@ class Interfaze(object):
             pos = pygame.mouse.get_pos()
 
             # Dibujar en la pantalla
-            self.screen.blit(self.background, (0, 0))
+            self.screen.blit(self.background_scale, (0, 0))
             self.draw_frame()
             self.draw_info()
             self.draw_cards()

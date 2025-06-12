@@ -1,7 +1,7 @@
 # Clase para crear un objeto BigBlind
 
 # Importaciones
-from blinds.blind import Blind
+from blinds import Blind
 
 # Clase BigBlind
 class BigBlind(Blind):

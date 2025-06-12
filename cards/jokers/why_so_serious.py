@@ -1,6 +1,6 @@
 # Clase para crear un objeto WhySoSerious
 
-from cards.jokers.joker import Joker
+from cards.jokers import Joker
 
 # Clase WhySoSerious
 class WhySoSerious(Joker):

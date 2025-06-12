@@ -1,7 +1,7 @@
 # Clase para crear un objeto BossBlind
 
 # Importaciones
-from blinds.blind import Blind
+from blinds import Blind
 from random import choice
 
 # Clase BossBlind
