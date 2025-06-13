@@ -1,7 +1,7 @@
 # Clase para crear un objeto Joker
 
 # Importaciones
-from cards.poker.poker import PokerCard
+from cards.poker import PokerCard
 
 # Clase Joker
 class Joker(object):

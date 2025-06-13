@@ -1,7 +1,7 @@
 # Este archivo contiene todas las manos de poker que se pueden jugar
 
 # Importaciones
-from cards.poker.poker import PokerCard
+from cards.poker import PokerCard
 from collections import defaultdict
 
 # Clase PokerHands
@@ -73,5 +73,4 @@ if __name__ == "__main__":
     carta5 = PokerCard("diamantes", "8")
     hands = PokerHands()
     cartas = [carta1, carta2, carta3, carta4, carta5]
-#    a = hands.parejas(*cartas)
-    print(a)
+    print("AAA")

@@ -1,289 +1,249 @@
-# Este archivo contiene la interfaz para el juego
-# ronda, cartas, ciega, dinero, etc
+# Prueba de interfaz en pygame
 
 # Importaciones
-import tkinter as tk
+import pygame, sys
+from pygame.locals import *
 
-# Clase GameUi
-class GameUi(object):
-    def __init__(self, root, game, player):
+# Clase Interfaze
+class GameScene(Scene):
+    def __init__(self, game, player):
+        # Inicializar pygame
+        pygame.init()
 
         # Atributos de clase
-        self.root = root
+        self.info = pygame.display.Info()
+        self.w = self.info.current_w
+        self.h = self.info.current_h
+        self.screen = pygame.display.set_mode((self.w, self.h), pygame.RESIZABLE)
         self.game = game
         self.player = player
-        self.lista_botones = []
 
-        # fuente y colores
-        self.font = ("Ubuntu Mono", 12, "bold")
-        self.violeta = "#8414b8"
-        self.celeste = "#14b8b8"
-        self.rojo = "#d1001c"
-        self.amarillo = "#ffaa1d"
+        # Listas para almacenar (rect, obj)
+        self.lista_botones_cartas = []
+        self.lista_botones_jokers = []
+
+        # Configuracion de la ventana
+        pygame.display.set_caption("Balatro en python")
+        self.background = pygame.image.load("assets/bg.png")
+        self.background_scale = pygame.transform.scale(self.background, (self.w, self.h))
         
-        # Config de la ventana
-        self.root.resizable(0,0)
-        self.root.config(bg="#6C757D")
+        # Control de FPS
+        self.fps = 60
+        self.reloj = pygame.time.Clock()
 
-        # frames para dividir la pantalla
-        self.info = tk.Frame(self.root, bg=self.violeta, bd=2)
-        self.info.grid(row=0, column=0, sticky="w")
+        # Colores
+        self.negro = (40, 40, 40)
+        self.blanco = (235, 219, 178)
+        self.rojo = (204, 36, 29)
+        self.verde = (152, 151, 26)
+        self.azul = (69, 133, 136)
+        self.amarillo = (215, 153, 33)
 
-        self.jokers = tk.Frame(self.root, bg="Red", bd=2)
-        self.jokers.grid(row=0, column=1, sticky="n")
+        # Fuente
+        self.font = pygame.font.SysFont("Ubuntu Mono", 16, "bold")
 
-        self.hand = tk.Frame(self.root, bg="Yellow", bd=2)
-        self.hand.grid(row=0, column=1, sticky="s")
+        # Informacion de la partida
 
-        self.hand_buttons = tk.Frame(self.root, bg="Black", bd=2)
-        self.hand_buttons.grid(row=1, column=1, sticky="n")
-
-        # ------ INFO DE LA PARTIDA ------
-        # mostrar la ciega actual
-        self.blind_name =tk.Label(self.info,
-                                  text=f"{self.game.obtener_ciega()[0]}",
-                                  font=self.font,
-                                  bg=self.violeta)
-
-        self.blind_name.grid(row=0, column=0, columnspan=2)
-
-        # puntos para ganar
-        self.blind_points = tk.Label(self.info,
-                                     text=f"{self.game.obtener_ciega()[1]}",
-                                     font=self.font,
-                                     bg=self.violeta)
-
-        self.blind_points.grid(row=1, column=0, columnspan=2)
-
-        # recompensa por ganar
-        self.blind_reward = tk.Label(self.info,
-                                     text=f"{self.game.obtener_ciega()[2]}",
-                                     font=self.font,
-                                     bg=self.violeta)
-
-        self.blind_reward.grid(row=2, column=0, columnspan=2)
-
-        # mostrar los puntos actuales
-        self.actual_score = tk.Label(self.info,
-                                     text=f"Puntos: {self.game.actual_score}",
-                                     font=self.font,
-                                     bg=self.violeta)
-
-        self.actual_score.grid(row=3, column=0, columnspan=2)
-
-        # mostrar la mano de poker seleccionada (ejemplo: color)
-        self.hand_poker = tk.Label(self.info, text="",
-                                   font=self.font,
-                                   bg=self.violeta)
-
-        self.hand_poker.grid(row=4, column=0, columnspan=2)
-
-        # mostrar puntos | multi de la mano de poker
-        self.poker_hand_points = tk.Label(self.info,
-                                          text="0",
-                                          font=self.font,
-                                          bg=self.celeste,
-                                          width=7)
-
-        self.poker_hand_points.grid(row=5, column=0)
-
-        self.poker_hand_multi = tk.Label(self.info,
-                                         text="0",
-                                         font=self.font,
-                                         bg=self.rojo,
-                                         width=7)
-
-        self.poker_hand_multi.grid(row=5, column=1)
-
-        # mostrar las manos por jugar restantes
-        self.hands_play = tk.Label(self.info,
-                                   text=f"Manos: {self.game.player_hands}",
-                                   font=self.font,
-                                   bg=self.violeta)
-
-        self.hands_play.grid(row=6, column=0)
-
-        # mostrar los descartes restantes
-        self.discarts = tk.Label(self.info,
-                                 text=f"Descartes: {self.game.player_discarts}",
-                                 font=self.font,
-                                 bg=self.violeta)
-
-        self.discarts.grid(row=6, column=1)
-
-        # mostrar el dinero actual del jugador
-        self.money = tk.Label(self.info,
-                              text=f"${self.player.money}",
-                              font=self.font,
-                              bg=self.violeta,
-                              fg=self.amarillo)
-
-        self.money.grid(row=7, column=0, columnspan=2)
-
-        # mostrar el piso actual
-        self.floor = tk.Label(self.info,
-                              text=f"Piso: {self.game.floor}",
-                              font=self.font,
-                              bg=self.violeta)
-        self.floor.grid(row=8, column=0)
-
-        # mostrar la ronda actual
-        self.round = tk.Label(self.info,
-                              text=f"Ronda: {self.game.round}",
-                              font=self.font,
-                              bg=self.violeta)
-
-        self.round.grid(row=8, column=1)
-
-        # ------ JOKERS ------
-        # Test
-        tk.Label(self.jokers, text="joker1, joker2, joker3, joker4, joker5").pack()
-
-        # -- BOTONES --
-        # boton para jugar la mano actual
-        self.jugar_btn = tk.Button(self.hand_buttons, text="Jugar",
-                                   font=self.font,
-                                   bg=self.celeste,
-                                   command=self.play_hand)
-        self.jugar_btn.grid(row=1, column=0)
-
-        # boton para descartar la mano actual
-        self.descartar_btn = tk.Button(self.hand_buttons, text="Descartar",
-                                       font=self.font,
-                                       bg=self.rojo,
-                                       command=self.discart_hand)
-        self.descartar_btn.grid(row=1, column=3)
-
-        # boton para ordenar las cartas por categoria
-        self.categoria_btn = tk.Button(self.hand_buttons, text="Categoria",
-                                       font=self.font,
-                                       bg=self.amarillo,
-                                       command=self.order_category)
-        self.categoria_btn.grid(row=1, column=1)
-
-        # boton para ordenar las cartas por palo
-        self.palo_btn = tk.Button(self.hand_buttons, text="Palo",
-                                  font=self.font,
-                                  bg=self.amarillo,
-                                  command=self.order_suit)
-        self.palo_btn.grid(row=1, column=2)
-
-        # ------ MANO DE CARTAS ------
-        # mostrar la mano de cartas
-        self.hand_view()
-
-        # Atajos
-        self.root.bind("<Control-p>", self.agregar_puntos)
-
+        # Botones de juego
+    
     # Metodos
-    # mostrar las cartas de la mano
-    def hand_view(self):
-        self.destruct_buttons()
-        for x, card in enumerate(self.player.hand):
-            btn = tk.Button(self.hand,
-                            bg="Green",
-                            text=f"{card.suit}\n{card.category}")
-            btn.config(command=lambda b=btn, c=card: self.select_card(b, c))
-            btn.grid(row=0, column=x)
-            self.lista_botones.append(btn)
+    # Actualizar la informacion de la pantalla
+    def update_info(self):
 
-    # seleccionar una carta
-    def select_card(self, btn, card):
-        if self.player.select_card(card):
-            btn.config(bg="Pink",
-                       command=lambda b=btn, c=card: self.deselect_card(b, c))
+        self.blind_name = self.font.render(f"{self.game.actual_blind.name}",
+                                           True, self.blanco)
 
-            # mostrar la mano de poker actual
-            mano, cartas, puntos_mano = self.game.obtain_hand()
-            self.hand_poker.config(text=mano)
+        self.blind_points = self.font.render(f"{self.game.actual_blind.points}",
+                                             True, self.blanco)
 
-            # mostrar los puntos y el multi de la mano de poker actual
-            puntos, multi = self.game.add_score(cartas, puntos_mano, True)
-            self.poker_hand_points.config(text=f"{puntos}")
-            self.poker_hand_multi.config(text=multi)
+        self.blind_reward = self.font.render(f"${self.game.actual_blind.reward}",
+                                             True, self.amarillo)
 
-    # deseleccionar una carta
-    def deselect_card(self, btn, card):
-        if self.player.deselect_card(card):
-            btn.config(bg="Green",
-                       command=lambda b=btn, c=card: self.select_card(b, c))
+        self.actual_score = self.font.render(f"{self.game.actual_score}",
+                                             True, self.blanco)
 
-            if len(self.player.selected_cards) == 0:
-                self.hand_poker.config(text="")
-                self.poker_hand_points.config(text="0")
-                self.poker_hand_multi.config(text="0")
+        # FIXMI: mostrar solo el nombre de la mano seleccionada
+        self.hand_poker = self.font.render(f"{self.game.obtain_hand()[0]}",
+                                           True, self.blanco)
 
-            else:
-                # mostrar la mano de poker actual
-                mano, cartas, puntos_mano = self.game.obtain_hand()
-                self.hand_poker.config(text=mano)
+        self.poker_hand_points = self.font.render(f"{self.game.obtain_hand()[2][0]}",
+                                                  True, self.azul)
 
-                # mostcac los puntos de la mano de poker actual
-                puntos, multi = self.game.add_score(cartas, puntos_mano, True)
-                self.poker_hand_points.config(text=f"{puntos}")
-                self.poker_hand_multi.config(text=multi)
+        self.poker_hand_multi = self.font.render(f"{self.game.obtain_hand()[2][1]}",
+                                                 True, self.rojo)
 
-    # jugar la mano de cartas
-    def play_hand(self):
-        if self.game.play_hand():
-            self.actual_score.config(text=f"Puntos: {self.game.actual_score}")
-            self.hands_play.config(text=f"Manos: {self.game.player_hands}")
-            self.hand_poker.config(text="")
-            self.poker_hand_points.config(text="0")
-            self.poker_hand_multi.config(text="0")
-            self.discarts.config(text=f"Descartes: {self.game.player_discarts}")
+        self.hands_play = self.font.render(f"Manos: {self.game.player_hands}",
+                                           True, self.blanco)
 
-            if self.game.pass_round_floor():
-                self.blind_name.config(text=f"{self.game.obtener_ciega()[0]}")
-                self.blind_points.config(text=f"{self.game.obtener_ciega()[1]}")
-                self.blind_reward.config(text=f"{self.game.obtener_ciega()[2]}")
-                self.actual_score.config(text=f"Puntos: {self.game.actual_score}")
-                self.hands_play.config(text=f"Manos: {self.game.player_hands}")
-                self.discarts.config(text=f"Descartes: {self.game.player_discarts}")
-                self.money.config(text=f"${self.player.money}")
-                self.round.config(text=f"{self.game.round}")
-                self.floor.config(text=f"{self.game.floor}")
+        self.discarts = self.font.render(f"Descartes: {self.game.player_discarts}",
+                                         True, self.blanco)
 
-            self.hand_view()
-        else:
-            self.root.destroy()
+        self.money = self.font.render(f"${self.player.money}", True, self.amarillo)
 
-    # descartar la mano de cartas
-    def discart_hand(self):
-        if self.game.discart_hand():
-            self.discarts.config(text=f"Descartes: {self.game.player_discarts}")
-            self.hand_view()
+        self.floor = self.font.render(f"Piso: {self.game.floor}", True, self.blanco)
 
-    # ordenar la mano de cartas por categoria
-    def order_category(self):
-        self.player.deselect_card(None, True)
-        self.destruct_buttons()
-        self.player.order_category()
-        self.hand_view()
+        self.round = self.font.render(f"Ronda: {self.game.round}", True, self.blanco)
 
-    # ordenar la mano de cartas por palo
-    def order_suit(self):
-        self.player.deselect_card(None, True)
-        self.destruct_buttons()
-        self.player.order_suit()
-        self.hand_view()
+    # Dubujar un marco para la informacion de la partida
+    def draw_frame(self):
+        pygame.draw.rect(self.screen, self.negro, ((self.w * 1.1) // 100, 
+                                                   (self.h * 2) // 100,
+                                                   (self.w * 30) // 100,
+                                                   self.h - 2 * ((self.h * 2) // 100)))
 
-    # destruir botones
-    def destruct_buttons(self):
-        for boton in self.lista_botones:
-            boton.destroy()
+    # Dibujar la informacion de la partida
+    def draw_info(self):
+        self.screen.blit(self.blind_name, (20, 20))
+        self.screen.blit(self.blind_points, (20, 40))
+        self.screen.blit(self.blind_reward, (20, 60))
+        self.screen.blit(self.actual_score, (20, 80))
+        self.screen.blit(self.hand_poker, (20, 100))
+        self.screen.blit(self.poker_hand_points, (20, 120))
+        self.screen.blit(self.poker_hand_multi, (40, 120))
+        self.screen.blit(self.hands_play, (20, 140))
+        self.screen.blit(self.discarts, (20, 160))
+        self.screen.blit(self.money, (20, 180))
+        self.screen.blit(self.floor, (20, 200))
+        self.screen.blit(self.round, (20, 220))
 
-    # ejecutar la ventana principal
-    def execute(self):
-        self.root.mainloop()
+    # Dibujar las cartas
+    def draw_cards(self):
+        self.lista_botones_cartas = [] # Limpiar los rectangulos
+        x = self.w // 2.8 
+        y = self.h // 1.4
+        color = (0, 255, 0)
+        for carta in self.player.hand:
+            rect = pygame.Rect(x, y, 40, 60)
 
-    # atajos para test
-    def agregar_puntos(self, event):
-        self.game.agregar_puntos()
-        self.actual_score.config(text=f"Puntos: {self.game.actual_score}")
+            if carta in self.player.selected_cards: # Pintar cartas seleccionda
+                pygame.draw.rect(self.screen, self.azul, rect)
+            else: # Pintar cartas no seleccionadas
+                pygame.draw.rect(self.screen, color, rect)
 
-# Test
-if __name__ == "__main__":
-    screen = tk.Tk()
-    a = Game(screen)
-    a.execute()
+            suit = self.font.render(f"{carta.suit}", True, self.negro)
+
+            category = self.font.render(f"{carta.category}", True, self.negro)
+
+            self.screen.blit(suit, (x, y))
+            self.screen.blit(category, (x, y+12))
+
+            self.lista_botones_cartas.append((rect, carta))
+            x += 45
+
+    # Dibujal la descripcion de las cartas
+    def draw_card_description(self, pos):
+        for rect, card in self.lista_botones_cartas:
+            if rect.collidepoint(pos):
+                pygame.draw.rect(self.screen, self.rojo, (305, 220, 175, 60))
+
+    # Dibujar los jokers
+    def draw_jokers(self):
+        self.lista_botones_jokers = [] # Limpiar lista
+        x = 215 
+        y = 10
+        color = (0, 255, 0)
+        for joker in self.player.jokers:
+            rect = pygame.Rect(x, y, 40, 60)
+            icon = pygame.image.load(joker.ruta_icon)
+
+            pygame.draw.rect(self.screen, self.amarillo, rect)
+            self.screen.blit(icon, rect.topleft)
+
+            self.lista_botones_jokers.append((rect, joker))
+            x += 45
+
+    # Dibujal la descripcion de las cartas
+    def draw_joker_description(self, pos):
+        for rect, joker in self.lista_botones_jokers:
+            if rect.collidepoint(pos):
+                pygame.draw.rect(self.screen, self.rojo, (305, 80, 175, 60))
+                description = self.font.render(f"Descripcion: {joker.description}",
+                                               True, self.negro)
+                self.screen.blit(description, (305, 80))
+
+    # Dibujar boton de jugar mano
+    def draw_buttons(self):
+        w = self.w // 2.8
+        h = self.h // 1.14
+
+        self.play_button = pygame.Rect(w, h, 85, 40)
+        self.discart_button = pygame.Rect(w + 270, h, 85, 40)
+        self.order_category_button = pygame.Rect(w + 90, h, 85, 40)
+        self.order_suit_button = pygame.Rect(w + 180, h, 85, 40)
+
+        pygame.draw.rect(self.screen, self.azul, self.play_button)
+        pygame.draw.rect(self.screen, self.rojo, self.discart_button)
+        pygame.draw.rect(self.screen, self.amarillo, self.order_category_button)
+        pygame.draw.rect(self.screen, self.amarillo, self.order_suit_button)
+
+    # Presionar rectangulos
+    def press_cards(self, pos):
+        for rect, card in self.lista_botones_cartas:
+            if rect.collidepoint(pos):
+                self.player.manipulate_card(card)
+
+    # Boton para jugar la mano de cartas
+    def play_hand(self, pos):
+        if self.play_button.collidepoint(pos):
+            self.game.play_hand()
+
+    # Boton para descartar la mano de cartas
+    def discart_hand(self, pos):
+        if self.discart_button.collidepoint(pos):
+            self.game.discart_hand()
+
+    # Boton para ordenar la mano de cartas por categoria
+    def order_category(self, pos):
+        if self.order_category_button.collidepoint(pos):
+            self.player.manipulate_card(None, True)
+            self.player.order_category()
+
+    # Boton para ordenar la mano de cartas por el palo
+    def order_suit(self, pos):
+        if self.order_suit_button.collidepoint(pos):
+            self.player.manipulate_card(None, True)
+            self.player.order_suit()
+
+    # Actualizar la ventana
+    def update_screen(self):
+        pygame.display.update()
+        self.reloj.tick(self.fps)
+
+    # Bucle principal de la ventana
+    def ejecutar(self):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            # Comprobar eventos
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = event.pos
+                self.press_cards(pos)
+                self.play_hand(pos)
+                self.discart_hand(pos)
+                self.order_category(pos)
+                self.order_suit(pos)
+
+            # Rescalar fondo
+            elif event.type == pygame.VIDEORESIZE:
+                self.w, self.h = event.size
+                self.background_scale = pygame.transform.scale(self.background,
+                                                                   (self.w, self.h))
+
+        # Actualizar la info de la partida
+        self.update_info()
+            
+        # Obtener coords del cursor
+        pos = pygame.mouse.get_pos()
+
+        # Dibujar en la pantalla
+        self.screen.blit(self.background_scale, (0, 0))
+        self.draw_frame()
+        self.draw_info()
+        self.draw_cards()
+        self.draw_jokers()
+        self.draw_buttons()
+        self.draw_card_description(pos)
+        self.draw_joker_description(pos)
+        self.update_screen()
