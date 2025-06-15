@@ -1,0 +1,5 @@
+scene -> escena base, (manejar events, dibujar, cambiar escena)
+main_menu -> menu principal (empezar el juego)
+game_scene -> escena principal del juego (todo lo que ya hice en game_ui)
+shop -> escena de la tienda (despues de pasar de ronda)
+game_over -> perder la partida
