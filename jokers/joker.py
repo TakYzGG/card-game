@@ -1,11 +1,15 @@
 # Clase para crear un objeto Joker
 
 # Importaciones
-from cards.poker import PokerCard
+from cards import PokerCard
 
 # Clase Joker
 class Joker(object):
-    def __init__(self, name, description, ruta_icon,
+    def __init__(self,
+                 name,
+                 description,
+                 price,
+                 ruta_icon,
                  add_multipler = False, # Agregar multiplicador
                  multi_multipler = False, # Multiplica el multiplicador
                  points = False, # Agregar puntos al final de la ronda
@@ -16,6 +20,7 @@ class Joker(object):
         # Atributos de clase
         self.__name = None
         self.__description = None
+        self.__price = price
         self.__ruta_icon = None
         self.__add_multipler = None
         self.__multi_multipler = None
@@ -25,6 +30,7 @@ class Joker(object):
 
         self.name = name
         self.description = description
+        self.price = price
         self.ruta_icon = ruta_icon
         self.add_multipler = add_multipler
         self.multi_multipler = multi_multipler
@@ -56,6 +62,18 @@ class Joker(object):
             self.__description = description
         else:
             return "'description' tiene que ser un str"
+
+    # price
+    @property
+    def price(self):
+        return self.__price
+
+    @price.setter
+    def price(self, price):
+        if isinstance(price, int):
+            self.__price = price
+        else:
+            return "El precio tiene que ser un int"
 
     # ruta_icon
     @property

@@ -1,7 +1,7 @@
 # Este archivo contiene todas las manos de poker que se pueden jugar
 
 # Importaciones
-from cards.poker import PokerCard
+from cards import PokerCard
 from collections import defaultdict
 
 # Clase PokerHands

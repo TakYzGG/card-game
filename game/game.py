@@ -2,7 +2,7 @@
 # Tiene la ronda y el piso actual, la ciega, etc
 
 # Importaciones
-from cards.jokers import *
+from jokers import *
 from blinds import *
 
 # Clase Game

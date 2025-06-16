@@ -2,7 +2,7 @@
 
 # Importaciones
 from player import Player
-from cards.poker import PokerHands
+from cards import PokerHands
 from game import Game
 from interface import MainMenu, Interface
 
