@@ -161,8 +161,6 @@ class Joker(object):
         if not suit: pass
         elif suit.capitalize() in palo:
             self.__suit = suit
-        elif isinstance(suit, False):
-            pass
         else:
             return f"'suit' tiene que ser una de estas: {palo}"
 
@@ -175,10 +173,12 @@ class Joker(object):
     def category(self, category):
         palo, categoria = PokerCard.obtener_cartas()
         if not category: pass
+        elif isinstance(category, tuple):
+            for i in category:
+                if i.capitalize in categoria:
+                    self.__category = category
         elif category.capitalize() in categoria:
             self.__category = category
-        elif isinstance(category, False):
-            pass
         else:
             return f"'category' tiene que ser una de estas: {palo}"
 

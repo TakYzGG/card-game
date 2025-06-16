@@ -1,0 +1,13 @@
+# Clase para crear un objecto
+
+# Importaciones
+from jokers import Joker
+
+# Clase
+class (Joker):
+    def __init__(self):
+        super().__init__(name=,
+                         descrition=,
+                         price=,
+                         rarity=,
+                         ruta_icon="assets/jokers/",)

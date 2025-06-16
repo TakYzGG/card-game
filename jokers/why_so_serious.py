@@ -10,7 +10,7 @@ class WhySoSerious(Joker):
                          description="Porque tan serio?",
                          price=9,
                          rarity="Epico",
-                         ruta_icon="assets/jokers/whysoserious.jpg",
+                         ruta_icon="assets/jokers/why_so_serious.jpg",
                          add_multipler=6,
                          points=500)
 
