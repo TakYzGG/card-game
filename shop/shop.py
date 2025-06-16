@@ -28,7 +28,7 @@ class Shop(object):
         return self.__player
 
     @player.setter
-    def player(player, player):
+    def player(self, player):
         if isinstance(player, Player):
             self.__player = player
         else:
@@ -42,7 +42,7 @@ class Shop(object):
     @jokers.setter
     def jokers(self, jokers):
         if isinstance(jokers, tuple):
-            self.jokers = jokers
+            self.__jokers = jokers
 
     # slots
     @property
@@ -59,12 +59,26 @@ class Shop(object):
     def items(self):
         return self.__items
 
+    @items.setter
+    def items(self, dicc):
+        if isinstance(dicc, dict):
+            self.__items = dicc
+
     # Metodos
-    def select_items(self):
+    # Elegir los jokers de la tienda aleatoriamente
+    def select_jokers(self):
         for _ in range(self.slots):
             joker = choice(self.jokers)
             self.__items["jokers"].append(joker)
 
-    def buy_items(self, item):
-        if self.player.money >= item.price:
-            pass
+    # Comprar un joker de la tienda
+    def buy_joker(self, joker):
+        if self.player.money >= joker.price:
+            self.player.jokers.append(joker)
+            self.player.money -= joker.price
+            self.items["jokers"].remove(joker)
+
+# Test
+if __name__ == "__main__":
+    a = Shop("test")
+    print(a.items)

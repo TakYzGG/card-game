@@ -6,4 +6,4 @@ from jokers.joker import Joker
 from jokers.why_so_serious import WhySoSerious
 
 def get_jokers():
-    return WhySoSerious
+    return WhySoSerious, "Hola mundo"
