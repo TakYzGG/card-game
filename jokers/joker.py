@@ -5,10 +5,17 @@ from cards import PokerCard
 
 # Clase Joker
 class Joker(object):
+                      # rareza, probabilidad
+    __list_raritys = (("Legendario", 5),
+                      ("Epico", 15),
+                      ("Raro", 30),
+                      ("Comun", 50))
+
     def __init__(self,
                  name,
                  description,
                  price,
+                 rarity,
                  ruta_icon,
                  add_multipler = False, # Agregar multiplicador
                  multi_multipler = False, # Multiplica el multiplicador
@@ -20,7 +27,8 @@ class Joker(object):
         # Atributos de clase
         self.__name = None
         self.__description = None
-        self.__price = price
+        self.__price = None
+        self.__rarity = None
         self.__ruta_icon = None
         self.__add_multipler = None
         self.__multi_multipler = None
@@ -74,6 +82,18 @@ class Joker(object):
             self.__price = price
         else:
             return "El precio tiene que ser un int"
+
+    # rarity
+    @property
+    def rarity(self):
+        return self.__rarity
+
+    @rarity.setter
+    def rarity(self, rarity):
+        if rarity.capitalize() in [x[0] for x in self.__raritys]:
+            self.__rarity = rarity
+        else:
+            return "Rareza no existente"
 
     # ruta_icon
     @property
@@ -161,6 +181,12 @@ class Joker(object):
             pass
         else:
             return f"'category' tiene que ser una de estas: {palo}"
+
+    # Metodos
+    # obtener la lista de rarezas
+    @classmethod
+    def obtener_rarezas(cls):
+        return cls.__list_raritys
 
 # Test
 if __name__ == "__main__":
