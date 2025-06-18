@@ -10,6 +10,6 @@ class SigmaJoker(Joker):
                          description="Cuando se juega un rey agrega +10 a la puntuacion",
                          price=3,
                          rarity="Comun",
-                         ruta_icon="assets/jokers/sigma_joker",
+                         ruta_icon="assets/jokers/sigma_joker.jpg",
                          points=10,
                          category="King")

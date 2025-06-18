@@ -3,14 +3,15 @@
 # Importaciones
 import pygame, sys
 from pygame.locals import *
-from interface import Scene#, Shop
+from interface import Scene
+from interface.shop import ShopScene
 
 # Clase GameScene
 class GameScene(Scene):
     def __init__(self, data=None):
         super().__init__()
 
-        self.game, self.player = data
+        self.game, self.player, _ = data
         self.actual_blind = self.game.actual_blind
 
         self.w, self.h = self.get_wh()
@@ -182,7 +183,7 @@ class GameScene(Scene):
     # verificar si cambio la ciega
     def change_blind(self):
         if self.actual_blind != self.game.actual_blind:
-            self.next_scene = "Shop"
+            self.next_scene = ShopScene
 
     # manejar eventos
     def handle_events(self, events):

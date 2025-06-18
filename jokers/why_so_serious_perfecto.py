@@ -10,7 +10,7 @@ class WhySoSeriousPerfecto(Joker):
                          description="Porque tan serio? (ahora perfeccionado)",
                          price=12,
                          rarity="Legendario",
-                         ruta_icon="assets/jokers/why_so_serious_perfecto",
+                         ruta_icon="assets/jokers/why_so_serious_perfecto.png",
                          add_multipler=6,
                          multi_multipler=20,
                          points=100000)

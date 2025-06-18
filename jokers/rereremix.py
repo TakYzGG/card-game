@@ -10,6 +10,6 @@ class ReReRemix(Joker):
                          description="Repite toda la mano jugada 1 veces",
                          price=9,
                          rarity="Epico",
-                         ruta_icon="assets/jokers/rereremix",
+                         ruta_icon="assets/jokers/rereremix.jpg",
                          # Falta logica para repetir la mano jugada
                         )

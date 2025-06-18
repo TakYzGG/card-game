@@ -10,6 +10,6 @@ class LowQualityJoker(Joker):
                          description="Si juegas un 1, 2, 3 o 4 puntua 2 veces",
                          price=6,
                          rarity="Raro",
-                         ruta_icon="assets/jokers/low_quality_joker", # falta extencion
+                         ruta_icon="assets/jokers/low_quality_joker.jpg",
                          category=("1" ,"2" ,"3", "4"))
 # Todavia no funciona, falta programar la logica para repetir la mano jugada

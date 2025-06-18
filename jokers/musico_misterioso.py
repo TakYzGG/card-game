@@ -10,6 +10,6 @@ class MusicoMisterioso(Joker):
                          description="No le preguntes por su musica",
                          price=6,
                          rarity="Raro",
-                         ruta_icon="assets/jokers/musico_misterioso",
+                         ruta_icon="assets/jokers/musico_misterioso.jpg",
                          # Falta agregar una mano al jugador
                          points=100)
