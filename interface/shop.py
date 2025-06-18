@@ -32,11 +32,14 @@ class ShopScene(Scene):
             self.lista_botones_jokers.append((rect, joker))
             x += 45
 
-
-
     # manejar eventos
     def handle_events(self, events):
-        pass
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN: pass
+            # Rescalar fondo
+            elif event.type == pygame.VIDEORESIZE:
+                self.bg_scale = pygame.transform.scale(self.bg, event.size)
+                self.w, self.h = event.size
 
     # dibujar en la pantalla
     def draw(self, screen):
