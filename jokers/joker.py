@@ -6,10 +6,10 @@ from cards import PokerCard
 # Clase Joker
 class Joker(object):
                       # rareza, probabilidad
-    __list_raritys = (("Legendario", 5),
-                      ("Epico", 15),
-                      ("Raro", 30),
-                      ("Comun", 50))
+    __list_raritys = {"Legendario": 0.05,
+                      "Epico": 0.15,
+                      "Raro": 0.30,
+                      "Comun": 0.50}
 
     def __init__(self,
                  name,
@@ -39,6 +39,7 @@ class Joker(object):
         self.name = name
         self.description = description
         self.price = price
+        self.rarity = rarity
         self.ruta_icon = ruta_icon
         self.add_multipler = add_multipler
         self.multi_multipler = multi_multipler
@@ -90,7 +91,7 @@ class Joker(object):
 
     @rarity.setter
     def rarity(self, rarity):
-        if rarity.capitalize() in [x[0] for x in self.__raritys]:
+        if rarity.capitalize() in self.__list_raritys.keys():
             self.__rarity = rarity
         else:
             return "Rareza no existente"

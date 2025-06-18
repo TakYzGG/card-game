@@ -7,9 +7,9 @@ from jokers import Joker
 class SigmaJoker(Joker):
     def __init__(self):
         super().__init__(name="SigmaJoker",
-                         descrition="Cuando se juega un rey agrega +10 a la puntuacion",
+                         description="Cuando se juega un rey agrega +10 a la puntuacion",
                          price=3,
                          rarity="Comun",
                          ruta_icon="assets/jokers/sigma_joker",
-                         poits=10,
+                         points=10,
                          category="King")

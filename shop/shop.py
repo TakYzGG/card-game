@@ -1,8 +1,8 @@
 # Clase para crear la tienda
 
 # Importaciones
-from jokers import get_jokers
-from random import choice
+from jokers import get_jokers, Joker
+from random import choices
 
 # Clase Shop
 class Shop(object):
@@ -67,9 +67,12 @@ class Shop(object):
     # Metodos
     # Elegir los jokers de la tienda aleatoriamente
     def select_jokers(self):
-        for _ in range(self.slots):
-            joker = choice(self.jokers)
-            self.__items["jokers"].append(joker)
+        probabilidades = [Joker.obtener_rarezas()[x.rarity] for x in self.jokers]
+        while len(self.items["jokers"]) < self.slots:
+            joker = choices(self.jokers, weights=probabilidades, k=1)[0]
+            if joker not in self.items["jokers"]:
+                self.__items["jokers"].append(joker)
+            else: continue
 
     # Comprar un joker de la tienda
     def buy_joker(self, joker):
@@ -77,6 +80,10 @@ class Shop(object):
             self.player.jokers.append(joker)
             self.player.money -= joker.price
             self.items["jokers"].remove(joker)
+
+    # Seleccionar los items de la tienda
+    def select_items(self):
+        self.select_jokers()
 
 # Test
 if __name__ == "__main__":
