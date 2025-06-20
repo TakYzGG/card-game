@@ -3,7 +3,7 @@
 # Importaciones
 import pygame, sys
 from pygame.locals import *
-from interface import Scene
+from interface import Scene, GameScene
 
 # Clase ShopScene
 class ShopScene(Scene):
@@ -13,13 +13,32 @@ class ShopScene(Scene):
         self.w, self.h = self.get_wh()
         self.bg = pygame.image.load("assets/main_menu/bg.jpg").convert()
         self.bg_scale = pygame.transform.scale(self.bg, (self.w, self.h))
+        # Listas para almacenar (rect, obj)
         self.lista_botones = []
         self.buy = False
         self.buy_button = pygame.Rect(0,0,0,0)
 
     # Metodos
+    # actualizar informacion de la tienda
+    def update_info(self):
+        self.money = self.font.render(f"${self.player.money}", True, self.amarillo)
+
+    # dibujar informacion de la tienda
+    def draw_info(self, screen):
+        screen.blit(self.money, (20, 20))
+
+    # dibujar botones
+    def draw_buttons(self, screen):
+        self.next_round = pygame.Rect(40, 200, 50, 50)
+        pygame.draw.rect(screen, self.verde, self.next_round)
+
+    # boton para pasar de ronda
+    def next_round_button(self, pos):
+        if self.next_round.collidepoint(pos):
+            self.next_scene = GameScene
+
     # crear botones para los jokers
-    def jokers_buttons(self, screen):
+    def draw_jokers_buttons(self, screen):
         self.lista_botones = []
         x_size = (self.w * 7) // 100
         y_size = (self.h * 15) // 100
@@ -42,7 +61,7 @@ class ShopScene(Scene):
             self.buy_button = pygame.Rect(50, 50, 60, 60)
             pygame.draw.rect(screen, self.rojo, self.buy_button)
 
-    # Boton para activar_desactivar el boton de comprar
+    # boton para activar_desactivar el boton de comprar
     def activate_buy_button(self, pos):
         for rect, obj in self.lista_botones:
             if rect.collidepoint(pos):
@@ -64,6 +83,7 @@ class ShopScene(Scene):
                 pos = pygame.mouse.get_pos()
                 self.activate_buy_button(pos)
                 self.use_buy_button(pos)
+                self.next_round_button(pos)
             # Rescalar fondo
             elif event.type == pygame.VIDEORESIZE:
                 self.bg_scale = pygame.transform.scale(self.bg, event.size)
@@ -72,5 +92,8 @@ class ShopScene(Scene):
     # dibujar en la pantalla
     def draw(self, screen):
         screen.blit(self.bg_scale, (0, 0))
-        self.jokers_buttons(screen)
+        self.update_info()
+        self.draw_info(screen)
+        self.draw_buttons(screen)
+        self.draw_jokers_buttons(screen)
         self.draw_buy_button(screen)

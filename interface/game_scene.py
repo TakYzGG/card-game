@@ -24,6 +24,7 @@ class GameScene(Scene):
         self.bg_scale = pygame.transform.scale(self.bg, (self.w, self.h))
 
     # Metodos
+    # actualizar la informacion de la partida
     def update_info(self):
 
         self.blind_name = self.font.render(f"{self.game.actual_blind.name}",
@@ -38,7 +39,6 @@ class GameScene(Scene):
         self.actual_score = self.font.render(f"{self.game.actual_score}",
                                              True, self.blanco)
 
-        # FIXMI: mostrar solo el nombre de la mano seleccionada
         self.hand_poker = self.font.render(f"{self.game.obtain_hand()[0]}",
                                            True, self.blanco)
 
@@ -69,6 +69,7 @@ class GameScene(Scene):
 
     # Dibujar la informacion de la partida
     def draw_info(self, screen):
+        # FIXMI: hacer que se acomode el texto en el marco
         screen.blit(self.blind_name, (20, 20))
         screen.blit(self.blind_points, (20, 40))
         screen.blit(self.blind_reward, (20, 60))
