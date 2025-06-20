@@ -101,6 +101,13 @@ class Player(object):
     def jokers(self):
         return self.__jokers
 
+    @jokers.setter
+    def jokers(self, joker):
+        if len(self.jokers) > 5:
+            return "No se puede tener mas de 5 jokers"
+        else:
+            self.__jokers.add(joker)
+
     # money
     @property
     def money(self):

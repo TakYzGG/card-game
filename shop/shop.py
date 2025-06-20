@@ -76,13 +76,17 @@ class Shop(object):
 
     # Comprar un joker de la tienda
     def buy_joker(self, joker):
-        if self.player.money >= joker.price:
+        if self.player.money >= joker.price and len(self.player.jokers) < 5:
             self.player.jokers.append(joker)
             self.player.money -= joker.price
             self.items["jokers"].remove(joker)
 
     # Seleccionar los items de la tienda
     def select_items(self):
+        self.items = {"jokers": [],
+                      #"cards": [],
+                      #"vales": []
+                      }
         self.select_jokers()
 
 # Test

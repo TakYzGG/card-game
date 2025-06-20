@@ -3,7 +3,8 @@
 # Importaciones
 import pygame, sys
 from pygame.locals import *
-from interface import Scene, GameScene
+from interface import Scene
+import interface
 
 # Clase ShopScene
 class ShopScene(Scene):
@@ -35,7 +36,8 @@ class ShopScene(Scene):
     # boton para pasar de ronda
     def next_round_button(self, pos):
         if self.next_round.collidepoint(pos):
-            self.next_scene = GameScene
+            self.next_scene = interface.GameScene
+            self.shop.select_items()
 
     # crear botones para los jokers
     def draw_jokers_buttons(self, screen):

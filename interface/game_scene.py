@@ -4,7 +4,7 @@
 import pygame, sys
 from pygame.locals import *
 from interface import Scene
-from interface.shop import ShopScene
+import interface
 
 # Clase GameScene
 class GameScene(Scene):
@@ -184,7 +184,7 @@ class GameScene(Scene):
     # verificar si cambio la ciega
     def change_blind(self):
         if self.actual_blind != self.game.actual_blind:
-            self.next_scene = ShopScene
+            self.next_scene = interface.ShopScene
 
     # manejar eventos
     def handle_events(self, events):
